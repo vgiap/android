@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AssertManager/AssertManager.iml" filepath="$PROJECT_DIR$/AssertManager/AssertManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IABHelper/IABHelper.iml" filepath="$PROJECT_DIR$/IABHelper/IABHelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LightLauncher/LightLauncher.iml" filepath="$PROJECT_DIR$/LightLauncher/LightLauncher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LightLauncherProject.iml" filepath="$PROJECT_DIR$/LightLauncherProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoginHelperLib/LoginHelperLib.iml" filepath="$PROJECT_DIR$/LoginHelperLib/LoginHelperLib.iml" />
+    </modules>
+  </component>
+</project>
+
