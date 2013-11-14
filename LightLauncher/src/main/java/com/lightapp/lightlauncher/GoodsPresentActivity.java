@@ -60,10 +60,24 @@ public class GoodsPresentActivity extends ActionBarActivity {
 
         // Add 3 tabs, specifying the tab's text and TabListener
         for (int i = 0; i < 3; i++) {
+            if(i==0)
             actionBar.addTab(
                     actionBar.newTab()
-                            .setText("Tab " + (i + 1))
+                            .setText("Local")
                             .setTabListener(tabListener));
+
+            if(i==1)
+                actionBar.addTab(
+                        actionBar.newTab()
+                                .setText("Hot Fee")
+                                .setTabListener(tabListener));
+
+            if(i==2)
+                actionBar.addTab(
+                        actionBar.newTab()
+                                .setText("Hot free")
+                                .setTabListener(tabListener));
+
         }
 
 
