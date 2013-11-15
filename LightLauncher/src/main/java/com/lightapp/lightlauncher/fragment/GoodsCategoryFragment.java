@@ -32,6 +32,37 @@ public class GoodsCategoryFragment extends Fragment {
         View pview =  inflater.inflate(R.layout.goods_category_list, container, false);
 
         listView = (ListView)pview.findViewById(R.id.list_item);
+
+        //load data
+
+        List<VGOpenAPI.Goods> goods = new ArrayList<VGOpenAPI.Goods>();
+
+        pageIndex = getArguments().getInt(ARG_OBJECT, 1);
+
+        if(pageIndex == 1)
+        {
+            goods.add(new VGOpenAPI.Goods("Local Goods 1", ""));
+            goods.add(new VGOpenAPI.Goods("Local Goods 2", ""));
+        }
+        else if(pageIndex == 2)
+        {
+            goods.add(new VGOpenAPI.Goods("Google 0.99$", ""));
+            goods.add(new VGOpenAPI.Goods("Google 1.99$", ""));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 100", ""));
+            goods.add(new VGOpenAPI.Goods("Diamond 1", ""));
+        }
+        else if(pageIndex == 3)
+        {
+            goods.add(new VGOpenAPI.Goods("Online Free", ""));
+            goods.add(new VGOpenAPI.Goods("Online Free", ""));
+            goods.add(new VGOpenAPI.Goods("Online Free", ""));
+            goods.add(new VGOpenAPI.Goods("Online Free", ""));
+        }
+
+        GoodsListAdapter gla = new GoodsListAdapter(goods, getActivity());
+
+        listView.setAdapter(gla);
+
         return pview;
     }
 
@@ -41,24 +72,7 @@ public class GoodsCategoryFragment extends Fragment {
 
         //load demo data
 
-        pageIndex = savedInstanceState.getInt(ARG_OBJECT, 1);
-    }
-
-    @Override
-    public void onResume()
-    {
-        //load data
-
-        List<VGOpenAPI.Goods> goods = new ArrayList<VGOpenAPI.Goods>();
-
-        goods.add(new VGOpenAPI.Goods("Free", ""));
-        goods.add(new VGOpenAPI.Goods("Google 1.99$", ""));
-        goods.add(new VGOpenAPI.Goods("Golden Coin 100", ""));
-        goods.add(new VGOpenAPI.Goods("Diamond 1", ""));
-
-        GoodsListAdapter gla = new GoodsListAdapter(goods, getActivity());
-
-        listView.setAdapter(gla);
+        pageIndex = getArguments().getInt(ARG_OBJECT, 1);
     }
 
     static class GoodsListAdapter extends BaseAdapter {

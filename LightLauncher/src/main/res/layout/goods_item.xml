@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:focusable="false">
+    android:focusable="true"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
 
     <ImageView
         android:id="@+id/goods_bg_default"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:scaleType="fitXY"
         android:src="@drawable/goods_default"
@@ -23,4 +25,4 @@
         android:layout_centerHorizontal="true" />
 
 
-</merge>
+</RelativeLayout>
