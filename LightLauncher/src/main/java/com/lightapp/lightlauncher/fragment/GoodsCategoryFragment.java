@@ -1,6 +1,7 @@
 package com.lightapp.lightlauncher.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lightapp.lightlauncher.view.GoodsItemView;
 import com.vg.api.VGOpenAPI;
 import com.lightapp.lightlauncher.R;
 
@@ -49,19 +51,24 @@ public class GoodsCategoryFragment extends Fragment {
 
         List<VGOpenAPI.Goods> goods = new ArrayList<VGOpenAPI.Goods>();
 
-        GoodsListAdapter gla = new GoodsListAdapter(goods);
+        goods.add(new VGOpenAPI.Goods("Free", ""));
+        goods.add(new VGOpenAPI.Goods("Google 1.99$", ""));
+        goods.add(new VGOpenAPI.Goods("Golden Coin 100", ""));
+        goods.add(new VGOpenAPI.Goods("Diamond 1", ""));
+
+        GoodsListAdapter gla = new GoodsListAdapter(goods, getActivity());
 
         listView.setAdapter(gla);
     }
 
-
-
     static class GoodsListAdapter extends BaseAdapter {
 
         List<VGOpenAPI.Goods> internalRef;
-        public GoodsListAdapter(List<VGOpenAPI.Goods> goods)
+        Context mContext;
+        public GoodsListAdapter(List<VGOpenAPI.Goods> goods, Context con)
         {
             internalRef = goods;
+            mContext = con.getApplicationContext();
         }
 
         @Override
@@ -80,8 +87,21 @@ public class GoodsCategoryFragment extends Fragment {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
+        public View getView(int i, View convertView, ViewGroup viewGroup) {
+            GoodsItemView view = null;
+
+            if(convertView == null)
+            {
+                view = new GoodsItemView(mContext);
+                view.setGoods(internalRef.get(i));
+            }
+            else if(convertView instanceof GoodsItemView)
+            {
+                view = (GoodsItemView)convertView;
+                view.setGoods(internalRef.get(i));
+            }
+
+            return view;
         }
 
         static class ViewHolder {
