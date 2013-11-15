@@ -2,16 +2,19 @@ package com.lightapp.lightlauncher.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lightapp.lightlauncher.GoodsDetailActivity;
 import com.lightapp.lightlauncher.view.GoodsItemView;
 import com.vg.api.VGOpenAPI;
 import com.lightapp.lightlauncher.R;
@@ -63,6 +66,7 @@ public class GoodsCategoryFragment extends Fragment {
 
         listView.setAdapter(gla);
 
+
         return pview;
     }
 
@@ -73,6 +77,17 @@ public class GoodsCategoryFragment extends Fragment {
         //load demo data
 
         pageIndex = getArguments().getInt(ARG_OBJECT, 1);
+
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(view.getContext(), GoodsDetailActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("GOODS", ((GoodsItemView)view).getContent());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     static class GoodsListAdapter extends BaseAdapter {
