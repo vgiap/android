@@ -46,6 +46,8 @@ public class GoodsDetailsFragment extends Fragment implements View.OnClickListen
         if(view.getId() == R.id.button_purchase)
         {
             //call purchase
+
+
         }
     }
 }

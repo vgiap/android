@@ -20,6 +20,9 @@ import com.lightapp.lightlauncher.fragment.GoodsCategoryFragment;
  */
 public class GoodsPresentActivity extends ActionBarActivity {
 
+    //license key for iap
+    //MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhyB0f3W9fSH7KsvS9S0AmSblEqPXLwLS/e3k+zi+Cqb0ZEMvr+UEWyufVdEdv8PlN0DRQfpPLn3FKb56a62vBhJhe+RyRNM081a1B6A2oGR9YFGa0DWjxStix5ue7bWv4hWU1/lBwV+re65HpXSHA/wGMrA5OFCgVrIgcXABBctCiMDddgSHHTEeu7rAa3GRYRM9ixrdI2XZI8/0k59PaM5/ldhDzLuoS/3pBsxAB2/Z/DWc9gqelb4cqy7e6tcShPAUmKHFe/u+8w8KA0jLKPnErCksUFG5nfsFYBAAlzle483Dg4sUB+iJjDrXTWvxD7+O0rBJJRemJTVSCvv3FQIDAQAB
+
     ViewPager mViewPager;
     GoodsPageAdapter mGoodsPagerAdapter;
 
@@ -69,13 +72,13 @@ public class GoodsPresentActivity extends ActionBarActivity {
             if(i==1)
                 actionBar.addTab(
                         actionBar.newTab()
-                                .setText("Hot Fee")
+                                .setText("Purchase from Google")
                                 .setTabListener(tabListener));
 
             if(i==2)
                 actionBar.addTab(
                         actionBar.newTab()
-                                .setText("Hot free")
+                                .setText("Purchase by Gold Coin")
                                 .setTabListener(tabListener));
 
         }

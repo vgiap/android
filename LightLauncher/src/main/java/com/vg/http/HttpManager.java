@@ -85,7 +85,7 @@ public class HttpManager {
             params.generateSignature();
 
 			HttpClient client = getNewHttpClient();
-			HttpUriRequest request = null;
+            HttpUriRequest request = null;
 			ByteArrayOutputStream bos = null;
 			client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, NetStateManager.getAPN());
 			if (method.equals(HTTPMETHOD_GET)) {

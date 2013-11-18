@@ -44,22 +44,36 @@ public class GoodsCategoryFragment extends Fragment {
 
         if(pageIndex == 1)
         {
-            goods.add(new VGOpenAPI.Goods("Local Goods 1", ""));
-            goods.add(new VGOpenAPI.Goods("Local Goods 2", ""));
+            goods.add(new VGOpenAPI.Goods("Local Goods 1", "", VGOpenAPI.FreePayLoad));
+            goods.add(new VGOpenAPI.Goods("Local Goods 2", "", VGOpenAPI.FreePayLoad));
         }
         else if(pageIndex == 2)
         {
-            goods.add(new VGOpenAPI.Goods("Google 0.99$", ""));
-            goods.add(new VGOpenAPI.Goods("Google 1.99$", ""));
-            goods.add(new VGOpenAPI.Goods("Golden Coin 100", ""));
-            goods.add(new VGOpenAPI.Goods("Diamond 1", ""));
+            goods.add(new VGOpenAPI.Goods("Google 0.99$", "",    VGOpenAPI.TestPayLoadInGoogldePlay.google_099));
+            goods.add(new VGOpenAPI.Goods("Google 1.49$", "",    VGOpenAPI.TestPayLoadInGoogldePlay.google_149));
+            goods.add(new VGOpenAPI.Goods("Google 1.99$", "",    VGOpenAPI.TestPayLoadInGoogldePlay.google_199));
+            goods.add(new VGOpenAPI.Goods("Google 2.99$", "",    VGOpenAPI.TestPayLoadInGoogldePlay.google_299));
+
+            goods.add(new VGOpenAPI.Goods("Golden Coin 100(0.99)",   "", VGOpenAPI.TestPayLoadInGoogldePlay.google_coin_099));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 200(1.49)",   "", VGOpenAPI.TestPayLoadInGoogldePlay.google_coin_149));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 300(1.99)",   "", VGOpenAPI.TestPayLoadInGoogldePlay.google_coin_199));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 400(2.49)",   "", VGOpenAPI.TestPayLoadInGoogldePlay.google_coin_249));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 600(2.99)",   "", VGOpenAPI.TestPayLoadInGoogldePlay.google_coin_299));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 10000(9.99)", "", VGOpenAPI.TestPayLoadInGoogldePlay.google_coin_999));
+
+            goods.add(new VGOpenAPI.Goods("Diamond (1)4.99", "diamond_4.99",       VGOpenAPI.TestPayLoadInGoogldePlay.google_diamond_499));
+            goods.add(new VGOpenAPI.Goods("Diamond (2)9.99", "diamond_9.99",       VGOpenAPI.TestPayLoadInGoogldePlay.google_diamond_999));
         }
         else if(pageIndex == 3)
         {
-            goods.add(new VGOpenAPI.Goods("Online Free", ""));
-            goods.add(new VGOpenAPI.Goods("Online Free", ""));
-            goods.add(new VGOpenAPI.Goods("Online Free", ""));
-            goods.add(new VGOpenAPI.Goods("Online Free", ""));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 100",   "", VGOpenAPI.TestPayLoadInGoogldePlay.coin_100));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 200",   "", VGOpenAPI.TestPayLoadInGoogldePlay.coin_200));
+            goods.add(new VGOpenAPI.Goods("Golden Coin 10000",   "", VGOpenAPI.TestPayLoadInGoogldePlay.coin_10000));
+
+            goods.add(new VGOpenAPI.Goods("Diamond 1",   "", VGOpenAPI.TestPayLoadInGoogldePlay.diamond_1));
+            goods.add(new VGOpenAPI.Goods("diamond 2",   "",  VGOpenAPI.TestPayLoadInGoogldePlay.diamond_2));
+            goods.add(new VGOpenAPI.Goods("diamond 5",   "",  VGOpenAPI.TestPayLoadInGoogldePlay.diamond_5));
+
         }
 
         GoodsListAdapter gla = new GoodsListAdapter(goods, getActivity());
