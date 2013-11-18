@@ -22,9 +22,10 @@ public class GoodsDetailsFragment extends Fragment implements View.OnClickListen
         super.onActivityCreated(savedInstanceState);
     }
 
-    TextView goodsName;
-    Button purchaseButton;
+    TextView        goodsName;
+    Button          purchaseButton;
     VGOpenAPI.Goods goods;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View containView = inflater.inflate(R.layout.goods_details_fragment, container, false);
@@ -46,7 +47,6 @@ public class GoodsDetailsFragment extends Fragment implements View.OnClickListen
         if(view.getId() == R.id.button_purchase)
         {
             //call purchase
-
 
         }
     }
