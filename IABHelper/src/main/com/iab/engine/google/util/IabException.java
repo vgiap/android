@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.vg.billing.util;
+package com.iab.engine.google.util;
 
 /**
  * Exception thrown when something went wrong with in-app billing.

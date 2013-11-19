@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.vg.billing.util;
+package com.vg.billing.google.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;

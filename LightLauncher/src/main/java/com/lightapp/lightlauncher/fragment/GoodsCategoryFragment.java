@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.lightapp.lightlauncher.GoodsDetailActivity;
 import com.lightapp.lightlauncher.view.GoodsItemView;
-import com.vg.api.VGOpenAPI;
 import com.lightapp.lightlauncher.R;
 
 import java.util.ArrayList;
@@ -98,7 +97,7 @@ public class GoodsCategoryFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(view.getContext(), GoodsDetailActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("GOODS", ((GoodsItemView)view).getContent());
+                intent.putExtra("GOODS", ((GoodsItemView) view).getContent());
                 view.getContext().startActivity(intent);
             }
         });

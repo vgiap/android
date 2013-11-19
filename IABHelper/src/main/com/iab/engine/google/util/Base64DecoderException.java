@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.vg.billing.util;
+package com.iab.engine.google.util;
 
 /**
  * Exception thrown when encountering an invalid Base64 input character.

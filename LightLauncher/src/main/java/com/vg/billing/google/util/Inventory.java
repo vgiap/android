@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.vg.billing.util;
+package com.vg.billing.google.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +77,7 @@ public class Inventory {
     }
 
     /** Returns a list of all purchases. */
-    List<Purchase> getAllPurchases() {
+    public List<Purchase> getAllPurchases() {
         return new ArrayList<Purchase>(mPurchaseMap.values());
     }
 

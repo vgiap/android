@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.vg.billing.util;
+package com.vg.billing.google.util;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -587,8 +587,9 @@ public class IabHelper {
          *
          * @param result The result of the operation.
          * @param inv The inventory.
+         * @param allPurchases all purchase goods
          */
-        public void onQueryInventoryFinished(IabResult result, Inventory inv);
+        public void onQueryInventoryFinished(IabResult result, Inventory inv, List<Purchase> allPurchases);
     }
 
 
@@ -624,12 +625,23 @@ public class IabHelper {
 
                 final IabResult result_f = result;
                 final Inventory inv_f = inv;
+
+
                 if (!mDisposed && listener != null) {
-                    handler.post(new Runnable() {
-                        public void run() {
-                            listener.onQueryInventoryFinished(result_f, inv_f);
-                        }
-                    });
+                    if(inv_f != null) {
+                        listener.onQueryInventoryFinished(result_f, inv_f, inv_f.getAllPurchases());
+                    }else {
+                        listener.onQueryInventoryFinished(result_f, null, null);
+                    }
+//                    handler.post(new Runnable() {
+//                        public void run() {
+//                            if(inv_f != null) {
+//                                listener.onQueryInventoryFinished(result_f, inv_f, inv_f.getAllPurchases());
+//                            }else {
+//                                listener.onQueryInventoryFinished(result_f, null, null);
+//                            }
+//                        }
+//                    });
                 }
             }
         })).start();

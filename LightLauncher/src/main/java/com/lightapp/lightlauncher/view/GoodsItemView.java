@@ -3,14 +3,12 @@ package com.lightapp.lightlauncher.view;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lightapp.lightlauncher.GoodsDetailActivity;
-import com.vg.api.VGOpenAPI;
 import com.lightapp.lightlauncher.R;
 
 /**

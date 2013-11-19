@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.vg.billing.util;
+package com.iab.engine.google.util;
 
 /**
  * Represents the result of an in-app billing operation.

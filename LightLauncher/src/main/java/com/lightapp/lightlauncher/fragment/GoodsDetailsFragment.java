@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lightapp.lightlauncher.R;
-import com.vg.api.VGOpenAPI;
 
 /**
  * Created by huadong on 11/15/13.
