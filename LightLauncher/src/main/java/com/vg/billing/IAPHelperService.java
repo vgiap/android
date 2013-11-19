@@ -75,4 +75,5 @@ public class IAPHelperService extends IntentService {
 		}
 		return false;
 	}
-}  
+}
+
