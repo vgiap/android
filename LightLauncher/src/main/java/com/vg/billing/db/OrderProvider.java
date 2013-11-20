@@ -19,6 +19,7 @@ public class OrderProvider extends ContentProvider {
     public static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_ORDER = "order_info";
+    public static final String CONTENT_URI = "content://com.vg.billling";
 
     @Override
     public boolean onCreate() {
@@ -181,14 +182,13 @@ public class OrderProvider extends ContentProvider {
     
     /*
      * 
-     * <provider android:name="com.borqs.market.db.DownLoadProvider"
+     * <provider android:name="com.vg.billing.db.OrderProvider"
                   android:exported="false"
-                  android:authorities="com.lightapp.lightlauncher.order"/>
+                  android:authorities="com.vg.billing"/>
      */
     public static Uri getContentURI(Context ctx, String tableName) {
-        String pkgName = ctx.getPackageName();
-        StringBuilder sb = new StringBuilder("content://");
-        sb.append(pkgName).append(AUTHORITIES_SUFFIX).append("/").append(tableName);
+        StringBuilder sb = new StringBuilder();
+        sb.append(CONTENT_URI).append(AUTHORITIES_SUFFIX).append("/").append(tableName);
         return Uri.parse(sb.toString());
     }
 }

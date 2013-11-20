@@ -19,4 +19,14 @@ public class BillingResult {
             super();
             this.billingType = billingType;
         }
+
+    public String toString()
+    {
+        return "paycode="+payCode +
+                "\r\norderid="+orderId +
+                "\r\noriginalJsom="+originalJson +
+                "\r\ntradeId="+tradeId +
+                "billingType" +billingType +
+                "response="+response;
+    }
 }

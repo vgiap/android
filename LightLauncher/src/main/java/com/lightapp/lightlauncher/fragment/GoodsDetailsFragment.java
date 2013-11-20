@@ -2,6 +2,7 @@ package com.lightapp.lightlauncher.fragment;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lightapp.lightlauncher.R;
+import com.vg.api.BillingResult;
+import com.vg.api.VGClient;
+import com.vg.api.VGData;
 
 /**
  * Created by huadong on 11/15/13.
  */
 
 public class GoodsDetailsFragment extends Fragment implements View.OnClickListener{
+    private final String TAG="GoodsDetailsFragment";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -23,7 +28,7 @@ public class GoodsDetailsFragment extends Fragment implements View.OnClickListen
 
     TextView        goodsName;
     Button          purchaseButton;
-    VGOpenAPI.Goods goods;
+    VGData.Goods    goods;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class GoodsDetailsFragment extends Fragment implements View.OnClickListen
 
         purchaseButton.setOnClickListener(this);
 
-        goods = (VGOpenAPI.Goods)getArguments().getSerializable("GOODS");
+        goods = (VGData.Goods)getArguments().getSerializable("GOODS");
         goodsName.setText(goods.name);
 
         return containView;
@@ -46,7 +51,12 @@ public class GoodsDetailsFragment extends Fragment implements View.OnClickListen
         if(view.getId() == R.id.button_purchase)
         {
             //call purchase
-
+            VGClient.purchase(this.getActivity(), goods, new VGClient.PurchaseListener() {
+                @Override
+                public void onBillingFinished(boolean isSuccess, BillingResult result) {
+                    Log.d(TAG, "purchase result="+isSuccess + " billing result="+result);
+                }
+            });
         }
     }
 }

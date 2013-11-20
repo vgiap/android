@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.vg.api.account.AccountObserver;
+import com.vg.billing.IABHomeWork;
 import com.vg.billing.IAPHelperService;
 
 /**
@@ -34,6 +35,10 @@ public class VGClient{
 
     public interface PurchaseListener {
         public void onBillingFinished(boolean isSuccess,  BillingResult result);
+    }
+
+    public interface IsGoodsPurchasedListener {
+        public void onQueryFinished(boolean purchased);
     }
 
     /*
@@ -165,4 +170,20 @@ public class VGClient{
         return currentLoginUser!= null;
     }
 
+    /*
+     * 3-D developer just need do purchase,
+     *
+     */
+    public static void purchase(Activity act, VGData.Goods product,final VGClient.PurchaseListener mpListener)
+    {
+        IABHomeWork.getIabHelperBridge().purchase(act, product, mpListener);
+    }
+
+    /*
+     * query from virtual goods server and local cache
+     */
+    public static void isGoodsPurchased(VGClient.IsGoodsPurchasedListener purchasedListener)
+    {
+
+    }
 }

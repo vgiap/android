@@ -47,7 +47,12 @@ public class IABHomeWork  implements AccountListener {
     private Context     mContext;
     private Service     mService;
 
-    private IabHelperBridge   iabBridge;
+    private static IabHelperBridge   iabBridge;
+
+    public static IabHelperBridge getIabHelperBridge()
+    {
+        return iabBridge;
+    }
 
     private Handler mHandler;
     public static int nErrorCount = 0;

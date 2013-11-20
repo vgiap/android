@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.lightapp.lightlauncher.GoodsDetailActivity;
 import com.lightapp.lightlauncher.R;
+import com.vg.api.VGData;
 
 /**
  * Created by huadong on 11/15/13.
@@ -21,7 +22,7 @@ public class GoodsItemView extends RelativeLayout {
         initView();
     }
 
-    VGOpenAPI.Goods content;
+    VGData.Goods content;
 
     TextView  title;
     ImageView goods_cover;
@@ -31,7 +32,7 @@ public class GoodsItemView extends RelativeLayout {
         super.onAttachedToWindow();
     }
 
-    public void setGoods(VGOpenAPI.Goods goods)
+    public void setGoods(VGData.Goods goods)
     {
         content = goods;
         title.setText(goods.name);
@@ -54,7 +55,7 @@ public class GoodsItemView extends RelativeLayout {
         view.getContext().startActivity(intent);
     }
 
-    public VGOpenAPI.Goods getContent() {
+    public VGData.Goods getContent() {
         return content;
     }
 }

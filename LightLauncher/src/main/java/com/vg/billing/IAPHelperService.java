@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.vg.billing.db.OrderHelper;
+import com.vg.billing.google.util.Purchase;
+
 public class IAPHelperService extends IntentService {
 	private static final String TAG = IAPHelperService.class.getSimpleName();
 
@@ -25,6 +28,11 @@ public class IAPHelperService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 		Log.v(TAG, "----------onCreate()-----------");
+
+        //just create database
+        OrderHelper rh = new OrderHelper(this, false);
+        rh.getLocalOrder("");
+
 
         mContext   = this.getApplicationContext();
         iabManager = new IABHomeWork(mContext,this);

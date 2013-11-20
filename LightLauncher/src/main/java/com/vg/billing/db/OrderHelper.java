@@ -21,7 +21,7 @@ public class OrderHelper {
     private static OrderHelper _instance;
     private Context mContext;
 
-    private static final HandlerThread sWorkerThread = new HandlerThread("market-db");
+    private static final HandlerThread sWorkerThread = new HandlerThread("order-db");
     static {
         sWorkerThread.start();
     }
