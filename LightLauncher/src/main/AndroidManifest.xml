@@ -47,10 +47,15 @@
             android:label="@string/title_activity_goods_detail" >
         </activity>
 
-        <!--begin in app purchase host integration-->
+        <!--
+        begin in app purchase host integration
+        -->
         <provider android:name="com.vg.billing.db.OrderProvider" android:authorities="com.vg.billing"/>
         <service android:name="com.vg.billing.IAPHelperService" android:label="IAB Helper Service" android:exported="false"/>
-        <!-- end in app purchase host integration -->
+        <!--
+        end in app purchase host integration
+        -->
+
     </application>
 
 </manifest>
