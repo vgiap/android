@@ -19,7 +19,7 @@ public class OrderProvider extends ContentProvider {
     public static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_ORDER = "order_info";
-    public static final String CONTENT_URI = "content://com.vg.billling";
+    public static final String CONTENT_URI = "content://com.vg.billing";
 
     @Override
     public boolean onCreate() {
@@ -123,6 +123,11 @@ public class OrderProvider extends ContentProvider {
                     + OrderColumns.IAB_ORDER_ID + " TEXT,"
                     + OrderColumns.HAS_ORDERED + " INTEGER DEFAULT 0,"
                     + OrderColumns.HAS_CONSUMED + " INTEGER DEFAULT 0 );");
+
+            db.execSQL("CREATE TABLE settings  (" +
+                    "   id    INTEGER PRIMARY KEY,"
+                    + " name  TEXT,"
+                    + " value TEXT);");
         }
 
         @Override
@@ -139,6 +144,7 @@ public class OrderProvider extends ContentProvider {
 
         private void dropTables(SQLiteDatabase db) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
+            db.execSQL("DROP TABLE IF EXISTS settings" );
         }
     }
 
@@ -188,7 +194,7 @@ public class OrderProvider extends ContentProvider {
      */
     public static Uri getContentURI(Context ctx, String tableName) {
         StringBuilder sb = new StringBuilder();
-        sb.append(CONTENT_URI).append(AUTHORITIES_SUFFIX).append("/").append(tableName);
+        sb.append(CONTENT_URI).append("/").append(tableName);
         return Uri.parse(sb.toString());
     }
 }

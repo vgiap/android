@@ -50,6 +50,24 @@ public class OrderHelper {
         }
     }
 
+    //
+    //it is for add, not include update
+    public void addSettings(String name, String value)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put("name",  name);
+        values.put("value", value);
+
+        if(!TextUtils.isEmpty(name)) {
+            String where = "name='" + name + "'";
+            int count = mContext.getContentResolver().update(OrderProvider.getContentURI(mContext, "settings"), values, where, null);
+            if(count == 0) {
+                mContext.getContentResolver().insert(OrderProvider.getContentURI(mContext, OrderProvider.TABLE_ORDER), values);
+            }
+        }
+    }
+
     public static void insertIabOder(Context context, Purchase p) {
         try{
             if(p == null) return;

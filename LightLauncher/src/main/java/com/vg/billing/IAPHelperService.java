@@ -33,6 +33,8 @@ public class IAPHelperService extends IntentService {
         OrderHelper rh = new OrderHelper(this, false);
         rh.getLocalOrder("");
 
+        rh.addSettings("test", "testvalue");
+
 
         mContext   = this.getApplicationContext();
         iabManager = new IABHomeWork(mContext,this);
