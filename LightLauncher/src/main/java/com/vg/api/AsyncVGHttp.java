@@ -1,7 +1,13 @@
 package com.vg.api;
 
 import com.vg.billing.db.Order;
+import com.vg.http.AsyncVGRunner;
+import com.vg.http.HttpManager;
+import com.vg.http.RequestListener;
+import com.vg.http.VGException;
+import com.vg.http.VGParameters;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,30 +74,52 @@ public class AsyncVGHttp extends ApiCallBack{
     public void registerUser(String identify,
                                     String profile,
                                     String provider/*google.com, facebook.com*/,
-                                    String appData, ApiCallBack.RegisterUser registUserCallBack)
+                                    String appData, final ApiCallBack.RegisterUser registUserCallBack)
     {
-        registUserCallBack.finishRegisterUser(registerUserImpl(identify, profile,profile, appData));
+        VGParameters vp = new VGParameters();
+        vp.add("human", identify);
+        vp.add("provider", provider);
+        vp.add("profile", profile);
+        vp.add("appData", appData);
+
+        new AsyncVGRunner().request(VGClient.baseAPIURL + "/register_user", vp, HttpManager.HTTPMETHOD_GET,new RequestListener() {
+
+            @Override
+            public void onComplete(String response) {
+                try{
+                    registUserCallBack.finishRegisterUser(VGData.User.parseJson(response));
+                }catch (Exception ne){registUserCallBack.OnException(ne);}
+            }
+
+            @Override
+            public void onError(VGException e) {
+                registUserCallBack.OnException(e);
+            }
+        });
     }
 
-    private VGData.User registerUserImpl(String identify,
-                                         String profile,
-                                         String provider/*google.com, facebook.com*/,
-                                         String appData)
-    {
-        return null;
-    }
+
 
     /*
      * batch upload orders
      */
-    public void batchUploadOrders(List<Order>orders, BatchUploadOrder orderUploadCallBack)
+    public void batchUploadOrders(List<Order>orders, final BatchUploadOrder orderUploadCallBack)
     {
-        orderUploadCallBack.uploadedOrders(batchUploadOrdersImpl(orders));
-    }
+        VGParameters vp = new VGParameters();
+        new AsyncVGRunner().request(VGClient.baseAPIURL + "/upload_orders", vp, HttpManager.HTTPMETHOD_POST,new RequestListener() {
 
-    private String batchUploadOrdersImpl(List<Order> orders)
-    {
-        return null;
+            @Override
+            public void onComplete(String response) {
+                try{
+                    orderUploadCallBack.uploadedOrders(response);
+                }catch (Exception ne){orderUploadCallBack.OnException(ne);}
+            }
+
+            @Override
+            public void onError(VGException e) {
+                orderUploadCallBack.OnException(e);
+            }
+        });
     }
 
  }

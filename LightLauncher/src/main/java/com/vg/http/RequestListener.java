@@ -8,10 +8,10 @@ import java.io.IOException;
  */
 public interface RequestListener {
     /**
-     * 用于获取服务器返回的响应内容
+     * process service http response
      * @param response
      */
 	public void onComplete(String response);
-	public void onIOException(IOException e);
-	public void onError(WutongException e);
+	//public void onIOException(IOException e);
+	public void onError(VGException e);
 }

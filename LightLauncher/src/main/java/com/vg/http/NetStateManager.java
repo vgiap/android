@@ -52,7 +52,7 @@ public class NetStateManager {
 			mCursor = mContext.getContentResolver().query(uri, null, null, null, null);
 		}
 		if (mCursor != null && mCursor.moveToFirst()) {
-			// 游标移至第一条记录，当然也只有一条
+			// move to first record
 			String proxyStr = mCursor.getString(mCursor.getColumnIndex("proxy"));
 			if (proxyStr != null && proxyStr.trim().length() > 0) {
 				proxy = new HttpHost(proxyStr, 80);

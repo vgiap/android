@@ -49,8 +49,10 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * 
+ *
+ * refer to sina open api
  * @author luopeng (luopeng@staff.sina.com.cn)
+ *
  */
 public class HttpManager {
 
@@ -72,13 +74,13 @@ public class HttpManager {
 	private static final int SET_SOCKET_TIMEOUT = 120 * 1000;
 	/**
 	 * 
-	 * @param url 服务器地址
+	 * @param url     service call url
 	 * @param method "GET"or “POST”
-	 * @param params   存放参数的容器
-	 * @return 响应结果
-	 * @throws com.vg.http.WutongException
+	 * @param params  parameters
+	 * @return        response
+	 * @throws        com.vg.http.VGException
 	 */
-	public static String openUrl(String url, String method, WutongParameters params) throws WutongException {
+	public static String openUrl(String url, String method, VGParameters params) throws VGException {
 		String result = "";
 		try {
             params.add("call_id", Long.toString(System.currentTimeMillis()));
@@ -127,12 +129,12 @@ public class HttpManager {
 
 			if (statusCode != 200) {
 				result = readHttpResponse(response);
-				throw new WutongException(result, statusCode);
+				throw new VGException(result, statusCode);
 			}
 			result = readHttpResponse(response);
 			return result;
-		} catch (IOException e) {
-			throw new WutongException(e);
+		} catch (Exception e) {
+			throw new VGException(e);
 		}
 	}
 	
@@ -162,7 +164,7 @@ public class HttpManager {
 			HttpConnectionParams.setSoTimeout(params, SET_SOCKET_TIMEOUT);
 			HttpClient client = new DefaultHttpClient(ccm, params);
 //			if (NetState.Mobile == NetStateManager.CUR_NETSTATE) {
-//				// 获取当前正在使用的APN接入点
+//				// get current using APN access point
 //				HttpHost proxy = NetStateManager.getAPN();
 //				if (null != proxy) {
 //					client.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
@@ -210,7 +212,7 @@ public class HttpManager {
 		}
 	}
 
-	private static void imageContentToUpload(OutputStream out, String imgpath) throws WutongException {
+	private static void imageContentToUpload(OutputStream out, String imgpath) throws VGException {
 		if(imgpath==null){
 		    return;
 		}
@@ -237,20 +239,20 @@ public class HttpManager {
 			out.write("\r\n".getBytes());
 			out.write(("\r\n" + END_MP_BOUNDARY).getBytes());
 		} catch (IOException e) {
-			throw new WutongException(e);
+			throw new VGException(e);
 		} finally {
 			if (null != input) {
 				try {
 					input.close();
 				} catch (IOException e) {
-					throw new WutongException(e);
+					throw new VGException(e);
 				}
 			}
 		}
 	}
 
 	/**
-	 * 读取HttpResponse数据
+	 * read HttpResponse data
 	 * 
 	 * @param response
 	 * @return
@@ -280,8 +282,8 @@ public class HttpManager {
 		}
 		return result;
 	}
-	   /**
-     * 产生11位的boundary
+	 /**
+     * generate 11 characters boundary
      */
     static String getBoundry() {
         StringBuffer _sb = new StringBuffer();

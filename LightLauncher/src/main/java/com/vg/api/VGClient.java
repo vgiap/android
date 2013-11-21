@@ -91,7 +91,8 @@ public class VGClient{
 
     static VGData.User      currentLoginUser;
 
-    public    static String IABKEY = "";
+    public static final String baseAPIURL="";
+    public static String IABKEY = "";
 
     private   static ConsumableCallBack consumableImpl = new ConsumableCallBack() {
         @Override
@@ -128,6 +129,7 @@ public class VGClient{
             @Override
             public boolean finishRegisterUser(VGData.User user) {
                 currentLoginUser = user.clone();
+                //save currentLoginUser into preference
 
                 AccountObserver.login(currentLoginUser);
                 return true;

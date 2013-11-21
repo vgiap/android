@@ -2,6 +2,8 @@ package com.vg.api;
 
 import android.text.TextUtils;
 
+import com.vg.http.VGException;
+
 import java.io.Serializable;
 
 /**
@@ -103,6 +105,11 @@ public class VGData {
         }
 
         public static User NullUser = new User();
+
+        //TODO
+        public static User parseJson(String response) throws VGException{
+            return null;
+        }
     }
 
     public enum PayType{

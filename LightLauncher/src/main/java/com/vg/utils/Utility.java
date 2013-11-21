@@ -12,7 +12,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.vg.http.WutongParameters;
+import com.vg.http.VGParameters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -50,7 +50,7 @@ public class Utility {
 		return params;
 	}
 
-	public static String encodeUrl(WutongParameters parameters) {
+	public static String encodeUrl(VGParameters parameters) {
 		if (parameters == null) {
 			return "";
 		}
@@ -58,7 +58,7 @@ public class Utility {
 		return parameters.encodeUrl();
 	}
 
-	public static String encodeParameters(WutongParameters httpParams) {
+	public static String encodeParameters(VGParameters httpParams) {
 		if (null == httpParams || httpParams.isEmpty()) {
 			return "";
 		}

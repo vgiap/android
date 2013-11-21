@@ -1,6 +1,8 @@
 package com.vg.http;
 
 
+import com.vg.api.VGClient;
+
 /**
  * 
  * @author luopeng (luopeng@staff.sina.com.cn)
@@ -13,7 +15,7 @@ public class AsyncVGRunner {
      * @param httpMethod "GET"or “POST”
      * @param listener callback
      */
-	public static void request(final String url, final WutongParameters params,
+	public static void request(final String url, final VGParameters params,
 			final String httpMethod, final RequestListener listener) {
 		new Thread() {
 			@Override
@@ -21,7 +23,7 @@ public class AsyncVGRunner {
 				try {
 					String resp = HttpManager.openUrl(url, httpMethod, params);
 					listener.onComplete(resp);
-				} catch (WutongException e) {
+				} catch (VGException e) {
 					listener.onError(e);
 				}
 			}

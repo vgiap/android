@@ -122,7 +122,7 @@ class Parameters {
 //    }
 }
 
-public class WutongParameters extends Parameters {
+public class VGParameters extends Parameters {
     private static final String KEY_IMAGE = "pic";
     private static final String KEY_CONTENT = "content-type";
 
@@ -183,7 +183,7 @@ public class WutongParameters extends Parameters {
    	}
 
     public void paramToUpload(OutputStream baos)
-   			throws WutongException {
+   			throws VGException {
    		String key = "";
    		for (int loc = 0; loc < size(); loc++) {
    			key = getKey(loc);
@@ -196,7 +196,7 @@ public class WutongParameters extends Parameters {
    			try {
    				baos.write(res);
    			} catch (IOException e) {
-   				throw new WutongException(e);
+   				throw new VGException(e);
    			}
    		}
    	}
