@@ -198,5 +198,3 @@ public class OrderProvider extends ContentProvider {
         return Uri.parse(sb.toString());
     }
 }
-
-
