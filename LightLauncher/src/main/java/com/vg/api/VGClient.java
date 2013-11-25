@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.vg.api.account.AccountObserver;
+import com.vg.billing.IABHelperService;
 import com.vg.billing.IABHomeWork;
-import com.vg.billing.IAPHelperService;
 
 /**
  * Created by huadong on 11/19/13.
@@ -115,7 +115,7 @@ public class VGClient{
         }
 
         //start in app purchase background service
-        con.startService(new Intent(con, IAPHelperService.class));
+        con.startService(new Intent(con, IABHelperService.class));
     }
 
 

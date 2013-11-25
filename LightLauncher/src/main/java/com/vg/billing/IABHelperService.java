@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.vg.billing.db.OrderHelper;
-import com.vg.billing.google.util.Purchase;
 
-public class IAPHelperService extends IntentService {
-	private static final String TAG = IAPHelperService.class.getSimpleName();
+public class IABHelperService extends IntentService {
+	private static final String TAG = IABHelperService.class.getSimpleName();
 
 	private Context     mContext;
 	private IABHomeWork iabManager = null;
@@ -20,7 +19,7 @@ public class IAPHelperService extends IntentService {
     public static final String SYNC_TYPE  = "sync_type";
     public static final String RESCHEDULE_NEXT_UPLOAD_ACTION="RESCHEDULE_NEXT_UPLOAD_ACTION";
 
-    public IAPHelperService() {
+    public IABHelperService() {
         super(TAG);
     }  
     
@@ -58,7 +57,7 @@ public class IAPHelperService extends IntentService {
 		try {
             switch(syncType)
             {
-                case IAPHelperService.TYPE_PURCHASE:
+                case IABHelperService.TYPE_PURCHASE:
                 {
                     iabManager.queryPurchases();
                 }

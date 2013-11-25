@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * Created by huadong on 11/19/13.
  */
-public class IabHelperBridge implements VGClient.BillingInterface{
-    private static final String TAG = IabHelperBridge.class.getSimpleName();
+public class IABHelperBridge implements VGClient.BillingInterface{
+    private static final String TAG = IABHelperBridge.class.getSimpleName();
 
     public static final int RC_REQUEST = 10001;
     private String string_iab_not_available = "In app Billing service is not available.";
@@ -33,7 +33,7 @@ public class IabHelperBridge implements VGClient.BillingInterface{
     boolean mEngineReady = false;
     boolean hasInited    = false;
 
-    public IabHelperBridge(Context context, IabHelper.QueryInventoryFinishedListener listener) {
+    public IABHelperBridge(Context context, IabHelper.QueryInventoryFinishedListener listener) {
         hasInited = false;
         this.context = context.getApplicationContext();
         createIabHelper(VGClient.IABKEY, listener);

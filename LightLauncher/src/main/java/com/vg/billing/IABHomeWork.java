@@ -47,9 +47,9 @@ public class IABHomeWork  implements AccountListener {
     private Context     mContext;
     private Service     mService;
 
-    private static IabHelperBridge   iabBridge;
+    private static IABHelperBridge iabBridge;
 
-    public static IabHelperBridge getIabHelperBridge()
+    public static IABHelperBridge getIabHelperBridge()
     {
         return iabBridge;
     }
@@ -63,7 +63,7 @@ public class IABHomeWork  implements AccountListener {
 
 
         mHandler  = new MainHandler();
-        iabBridge = new IabHelperBridge(mContext, queryInvListener);
+        iabBridge = new IABHelperBridge(mContext, queryInvListener);
         nErrorCount = getErrorCount(context);
 
         AccountObserver.registerAccountListener(IABHomeWork.class.getName(), this);
@@ -118,7 +118,7 @@ public class IABHomeWork  implements AccountListener {
 
                     //re-launch again base on next 2*pre-wait time
                     setErrorCount(mContext, nErrorCount + 1);
-                    rescheduleSync(false, IAPHelperService.TYPE_UPLOAD);
+                    rescheduleSync(false, IABHelperService.TYPE_UPLOAD);
                     destroy();
                 }
                 break;
@@ -210,9 +210,9 @@ public class IABHomeWork  implements AccountListener {
         long nexttime = current_time + delaytime;
         BLog.v(TAG, "-------------------rescheduleSync()------------------delaytime = " + delaytime);
 
-        Intent intent = new Intent(mContext, IAPHelperService.class);
-        intent.setAction(IAPHelperService.RESCHEDULE_NEXT_UPLOAD_ACTION);
-        intent.putExtra(IAPHelperService.SYNC_TYPE, type);
+        Intent intent = new Intent(mContext, IABHelperService.class);
+        intent.setAction(IABHelperService.RESCHEDULE_NEXT_UPLOAD_ACTION);
+        intent.putExtra(IABHelperService.SYNC_TYPE, type);
         PendingIntent nextLauncher = PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmMgr.set(AlarmManager.RTC, nexttime, nextLauncher);
     }
@@ -224,7 +224,7 @@ public class IABHomeWork  implements AccountListener {
             BLog.v(TAG, "-------------------queryPurchases()------------result.isSuccess=" + result.isSuccess() +"   "+ result.getMessage());
             if (result.isFailure()) {
                 setErrorCount(mContext, nErrorCount + 1);
-                rescheduleSync(false, IAPHelperService.TYPE_PURCHASE);
+                rescheduleSync(false, IABHelperService.TYPE_PURCHASE);
                 destroy();
                 return;
             }
@@ -256,7 +256,7 @@ public class IABHomeWork  implements AccountListener {
             BLog.v(TAG, "-------------------queryPurchases()------------result.isSuccess=" + result.isSuccess() +"   "+ result.getMessage());
             if (result.isFailure()) {
                 setErrorCount(mContext, nErrorCount + 1);
-                rescheduleSync(false, IAPHelperService.TYPE_PURCHASE);
+                rescheduleSync(false, IABHelperService.TYPE_PURCHASE);
                 destroy();
                 return;
             }
@@ -342,7 +342,7 @@ public class IABHomeWork  implements AccountListener {
                 BLog.d(TAG, "onConsumeMultiFinished exception: "+ e.getMessage());
                 if(mContext != null) {
                     setErrorCount(mContext, nErrorCount + 1); 
-                    rescheduleSync(false, IAPHelperService.TYPE_CONSUME);
+                    rescheduleSync(false, IABHelperService.TYPE_CONSUME);
                     StaticReport.report(mContext, "Market Report: user_id = " +VGClient.getCurrentUser().uid  + "  Exception consumeAsync()  " + e.getMessage());
                 }
             }
