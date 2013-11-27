@@ -21,6 +21,7 @@ public class ApiCallBack {
         boolean purchaseFinished(VGData.Receipt receipt);
     }
 
+
     public interface RegisterUser extends CallBack{
         boolean finishRegisterUser(VGData.User user);
     }

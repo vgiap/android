@@ -4,6 +4,8 @@ import android.text.TextUtils;
 
 import com.vg.http.VGException;
 
+import org.json.JSONException;
+
 import java.io.Serializable;
 
 /**
@@ -112,8 +114,16 @@ public class VGData {
         }
     }
 
-    public enum PayType{
-        FREE, GOOGLE_PLAYER, APPLE_STORE,ALI_PAY, VIRTUAL_CURRENCY_COIN,VIRTUAL_CURRENCY_DIAMOND
+    /*
+     * please map to server-endpoint definition
+     */
+    public static class PayType{
+        public final static int FREE         =0;
+        public final static int GOOGLE_PLAYER=1;
+        public final static int APPLE_STORE  =2;
+        public final static int ALI_PAY      =3;
+        public final static int VIRTUAL_CURRENCY_COIN   =4;
+        public final static int VIRTUAL_CURRENCY_DIAMOND=5;
     };
 
     public static Payload FreePayLoad =new VGData.Payload("Free", "no sku", PayType.FREE);
@@ -121,20 +131,30 @@ public class VGData {
     public static class Payload implements Serializable{
         public String   displayName;
         public String   sku;
-        public PayType  type;
+        public int      type;
 
 
 
-        public Payload(String displayName, String sku_string, PayType paytype)
+        public Payload(String displayName, String sku_string, int pay_type)
         {
             this.displayName = displayName;
-            this.sku = sku_string;
-            this.type = paytype;
+            this.sku  = sku_string;
+            this.type = pay_type;
         }
     }
 
 
     public static class Receipt{
         public String orderNumber;
+
+        //create one receipt from google billing result, it should be return from VG service
+        public Receipt(BillingResult response) {
+
+        }
+
+        //TODO
+        public static Receipt parseJson(String response)throws JSONException{
+            return null;
+        }
     }
 }

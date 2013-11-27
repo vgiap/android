@@ -63,7 +63,7 @@ public class OrderHelper {
             String where = "name='" + name + "'";
             int count = mContext.getContentResolver().update(OrderProvider.getContentURI(mContext, "settings"), values, where, null);
             if(count == 0) {
-                mContext.getContentResolver().insert(OrderProvider.getContentURI(mContext, OrderProvider.TABLE_ORDER), values);
+                mContext.getContentResolver().insert(OrderProvider.getContentURI(mContext, "settings"), values);
             }
         }
     }
@@ -206,6 +206,23 @@ public class OrderHelper {
         }
 
         return orderInfo;
+    }
+
+    public boolean isGoodsExist(String goods_id)
+    {
+        String where = OrderColumns.PRODUCT_ID + "='" + goods_id;
+        Cursor cursor = mContext.getContentResolver().query(
+                OrderProvider.getContentURI(mContext, OrderProvider.TABLE_ORDER),
+                OrderColumns.PROJECTION, where, null, null);
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            Order orderInfo = formartOrder(cursor);
+            cursor.close();
+            return true;
+        }else {
+            cursor.close();
+            return false;
+        }
     }
     
     public Order getLocalOrder(String productID) {

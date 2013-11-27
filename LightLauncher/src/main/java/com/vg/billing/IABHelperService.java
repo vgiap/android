@@ -19,6 +19,9 @@ public class IABHelperService extends IntentService {
     public static final String SYNC_TYPE  = "sync_type";
     public static final String RESCHEDULE_NEXT_UPLOAD_ACTION="RESCHEDULE_NEXT_UPLOAD_ACTION";
 
+    //TODO
+    //Observer to database new order inserted
+
     public IABHelperService() {
         super(TAG);
     }  

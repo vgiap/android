@@ -7,7 +7,7 @@ public class BillingResult {
 
         public static final int TYPE_IAB = 0;
         public static final int TYPE_IAP = 1;
-        public String payCode;
+        public String payCode;  //sku
         public String orderId;
         public String originalJson;
         public String tradeId;

@@ -15,13 +15,15 @@
 
 package com.vg.billing.google.util;
 
+import com.vg.billing.common.PurchaseData;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Represents an in-app billing purchase.
  */
-public class Purchase {
+public class Purchase implements PurchaseData{
     String mItemType;  // ITEM_TYPE_INAPP or ITEM_TYPE_SUBS
     String mOrderId;
     String mPackageName;
@@ -60,4 +62,9 @@ public class Purchase {
 
     @Override
     public String toString() { return "PurchaseInfo(type:" + mItemType + "):" + mOriginalJson; }
+
+    @Override
+    public String toJson() {
+        return mOriginalJson;
+    }
 }

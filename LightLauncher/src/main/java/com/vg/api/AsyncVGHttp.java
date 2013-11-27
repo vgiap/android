@@ -1,15 +1,27 @@
 package com.vg.api;
 
+import com.vg.billing.common.PurchaseData;
 import com.vg.billing.db.Order;
+import com.vg.billing.db.OrderHelper;
+import com.vg.billing.google.util.Purchase;
 import com.vg.http.AsyncVGRunner;
 import com.vg.http.HttpManager;
 import com.vg.http.RequestListener;
 import com.vg.http.VGException;
 import com.vg.http.VGParameters;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.vg.api.VGData.PayType.ALI_PAY;
+import static com.vg.api.VGData.PayType.APPLE_STORE;
+import static com.vg.api.VGData.PayType.FREE;
+import static com.vg.api.VGData.PayType.GOOGLE_PLAYER;
+import static com.vg.api.VGData.PayType.VIRTUAL_CURRENCY_COIN;
+import static com.vg.api.VGData.PayType.VIRTUAL_CURRENCY_DIAMOND;
 
 /**
  * Created by huadong on 11/18/13.
@@ -31,14 +43,76 @@ public class AsyncVGHttp extends ApiCallBack{
      * purchase goods
      *
      */
-    public boolean purchaseGoods(String url, HashMap parameters, ApiCallBack.PurchaseCallback pcallback)
+    public boolean purchaseGoods(final VGData.Goods product, int pay_count, PurchaseData app_data, final VGClient.PurchaseListener pCallback)
     {
-        return pcallback.purchaseFinished(purchaseGoodsImpl(url, parameters));
-    }
+        VGParameters vp = new VGParameters();
+        vp.add("cost_type",       product.pay.type);
+        vp.add("goods_id",        product.gid);
+        vp.add("count",           pay_count);
+        vp.add("cost_real_money", product.pay.displayName);
+        vp.add("pay_channel",     product.pay.type);
+        vp.add("pay_id",          app_data.getOrderId());
+        vp.add("app_data",        app_data.toJson());
 
-    private VGData.Receipt purchaseGoodsImpl(String url, HashMap parameters)
-    {
-        return null;
+        new AsyncVGRunner().request(VGClient.baseAPIURL + "/purchase", vp, HttpManager.HTTPMETHOD_POST,new RequestListener() {
+
+            @Override
+            public void onComplete(String response) {
+                try{
+
+                    VGData.Receipt rec = VGData.Receipt.parseJson(response);
+
+                    if(rec != null)
+                    {
+                        //update local database
+                        OrderHelper.updateIabOderStatus(VGClient.getContext(), product.gid, true);
+
+                        switch(product.pay.type)
+                        {
+                            case GOOGLE_PLAYER: //google play
+                                pCallback.onUploadOrderFinished(true, rec);
+                                break;
+                            case FREE:
+                            case VIRTUAL_CURRENCY_COIN:
+                            case VIRTUAL_CURRENCY_DIAMOND:
+                                pCallback.onBillingFinished(product, null);
+                                pCallback.onUploadOrderFinished(true, rec);
+                                break;
+
+                            case APPLE_STORE:
+                            case ALI_PAY:
+                                break;
+                        }
+                    }
+                    else//fail to call api buy
+                    {
+                        switch(product.pay.type)
+                        {
+                            case GOOGLE_PLAYER: //google play
+                                pCallback.onUploadOrderFinished(false, null);
+                                break;
+                            case FREE:
+                            case VIRTUAL_CURRENCY_COIN:
+                            case VIRTUAL_CURRENCY_DIAMOND:
+                                pCallback.onException(new Exception("Fail to purchase goods="+product));
+                                break;
+
+                            default:
+                                pCallback.onException(new Exception("Fail to purchase goods="+product));
+                                break;
+                        }
+
+                    }
+                }catch (Exception ne){pCallback.onException(ne);}
+            }
+
+            @Override
+            public void onError(VGException e) {
+                pCallback.onException(e);
+            }
+        });
+
+        return true;
     }
     //end purchase
     //----------------------------------End Google Play IAP Call--------------------------------------
@@ -69,12 +143,15 @@ public class AsyncVGHttp extends ApiCallBack{
 
     /*
      * register user
-     *
+     * @param identify               display name
+     * @param profile               logo url
+     * @param provider              account provider, such as google.com, facebook.com
+     * @param registerUserCallBack  client callback
      */
     public void registerUser(String identify,
                                     String profile,
                                     String provider/*google.com, facebook.com*/,
-                                    String appData, final ApiCallBack.RegisterUser registUserCallBack)
+                                    String appData, final ApiCallBack.RegisterUser registerUserCallBack)
     {
         VGParameters vp = new VGParameters();
         vp.add("human", identify);
@@ -87,13 +164,13 @@ public class AsyncVGHttp extends ApiCallBack{
             @Override
             public void onComplete(String response) {
                 try{
-                    registUserCallBack.finishRegisterUser(VGData.User.parseJson(response));
-                }catch (Exception ne){registUserCallBack.OnException(ne);}
+                    registerUserCallBack.finishRegisterUser(VGData.User.parseJson(response));
+                }catch (Exception ne){registerUserCallBack.OnException(ne);}
             }
 
             @Override
             public void onError(VGException e) {
-                registUserCallBack.OnException(e);
+                registerUserCallBack.OnException(e);
             }
         });
     }

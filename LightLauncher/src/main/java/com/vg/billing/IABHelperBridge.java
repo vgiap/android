@@ -104,7 +104,7 @@ public class IABHelperBridge implements VGClient.BillingInterface{
     }
 
     private void launchPurchaseFlow(Activity act, String sku,
-                                    IabHelper.OnIabPurchaseFinishedListener listener, String payload, VGClient.PurchaseListener mpListener) {
+                                    IabHelper.OnIabPurchaseFinishedListener listener, String payload, VGClient.GooglePurchaseListener mpListener) {
         if(act == null) return;
         if(act.isFinishing()) return;
         if (!mEngineReady) {
@@ -125,7 +125,7 @@ public class IABHelperBridge implements VGClient.BillingInterface{
     }
 
     @Override
-    public void purchase(Activity act, VGData.Goods product,final VGClient.PurchaseListener mpListener) {
+    public void purchase(Activity act, VGData.Goods product,final VGClient.GooglePurchaseListener mpListener) {
         try{
             final String sku = product.getSku();
             final String payload = product.getPayload();

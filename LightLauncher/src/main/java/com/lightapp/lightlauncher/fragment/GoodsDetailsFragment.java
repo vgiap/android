@@ -48,15 +48,22 @@ public class GoodsDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
+        //call purchase
         if(view.getId() == R.id.button_purchase)
-        {
-            //call purchase
-            VGClient.purchase(this.getActivity(), goods, new VGClient.PurchaseListener() {
+            VGClient.purchase(this.getActivity(), goods, 1, new VGClient.PurchaseListener() {
                 @Override
-                public void onBillingFinished(boolean isSuccess, BillingResult result) {
-                    Log.d(TAG, "purchase result="+isSuccess + " billing result="+result);
+                public void onException(Exception ex) {
+
+                }
+
+                @Override
+                public void onBillingFinished(VGData.Goods goods, BillingResult response) {
+                }
+
+                @Override
+                public void onUploadOrderFinished(boolean res,     VGData.Receipt billingResult) {
+
                 }
             });
-        }
     }
 }
