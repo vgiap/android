@@ -265,9 +265,30 @@ public class VGClient{
 
     /*
      * query from virtual goods server and local cache
+     *
+     * we don't check google product here
+     *
      */
-    public static void isGoodsPurchased(VGClient.IsGoodsPurchasedListener purchasedListener)
+    public static void isGoodsPurchased(VGData.Goods product, VGClient.IsGoodsPurchasedListener purchasedListener)
     {
+        //check local firstly
+        boolean exist = OrderHelper.getInstance(getContext()).isGoodsExist(product.gid);
+        if(exist == true)
+        {
+            purchasedListener.onQueryFinished(true);
+        }
+        else//call server check
+        {
+            //TODO
+            if(product.pay.type == GOOGLE_PLAYER)
+            {
+                //call google query
+            }
+            else
+            {
+                //call vg query
+            }
 
+        }
     }
 }
