@@ -5,5 +5,8 @@ package com.vg.delivery;
  *
  * process download goods static file
  */
-public class DownloadListener {
+public interface DownloadListener {
+    public void onBeginDownload();
+    public void onProgress(int progress);
+    public void onEndDownload();
 }
