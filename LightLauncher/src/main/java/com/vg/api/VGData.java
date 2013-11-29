@@ -28,6 +28,9 @@ public class VGData {
         public String name;       //goods name
         public String cover;      //cover url
 
+        public boolean paid;
+        public long    paid_date;
+
         public Payload pay;
 
         public String getSku()

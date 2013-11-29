@@ -10,15 +10,15 @@ import java.util.List;
 public class ApiCallBack {
 
     protected interface CallBack {
-        public void OnException(Exception ex);
+        public void onException(Exception ex);
     }
 
     public interface GoodsListCallback  extends CallBack{
        boolean getGoodsList(List<VGData.Goods> goods);
     }
 
-    public interface PurchaseCallback extends CallBack{
-        boolean purchaseFinished(VGData.Receipt receipt);
+    public interface QueryPurchaseCallback extends CallBack{
+        boolean queryPurchaseFinished(VGData.Receipt receipt);
     }
 
 

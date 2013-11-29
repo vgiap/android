@@ -3,19 +3,23 @@ package com.vg.api;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.appcompat.R;
 import android.util.Log;
 
 import com.vg.api.account.AccountObserver;
 import com.vg.billing.IABHelperService;
 import com.vg.billing.IABHomeWork;
 import com.vg.billing.db.OrderHelper;
+import com.vg.billing.google.util.IabHelper;
 import com.vg.billing.google.util.IabResult;
+import com.vg.billing.google.util.Inventory;
 import com.vg.billing.google.util.Purchase;
 import com.vg.billing.vc.util.VirtualCurrencyPurchase;
 
 import org.json.JSONException;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import static com.vg.api.VGData.PayType.ALI_PAY;
 import static com.vg.api.VGData.PayType.APPLE_STORE;
@@ -61,13 +65,24 @@ public class VGClient{
     }
 
     public interface GooglePurchaseListener{
-        public void   OnException(Exception ex);
+        public void   onException(Exception ex);
         public void   onBillingFinished(boolean res, BillingResult response);
+    }
+
+    public interface RegisterUserListener{
+        public void    onException(Exception ex);
+        public boolean finishRegisterUser(VGData.User user);
     }
 
 
     public interface IsGoodsPurchasedListener {
-        public void onQueryFinished(boolean purchased);
+        public final int QueryFail    = 0;
+        public final int UnknownError = 1;
+        public final int SUCCESS      = 2;
+        /*
+         * if result is not success, don't use purchased, consumed
+         */
+        public void onQueryFinished(int result, boolean purchased, boolean consumed);
     }
 
     /*
@@ -120,7 +135,7 @@ public class VGClient{
 
     static VGData.User      currentLoginUser;
 
-    public static final String baseAPIURL = "";
+    public static final String baseAPIURL = "http://api.xxx.com/1/";
     public static String IABKEY           = "";
 
     private   static ConsumableCallBack consumableImpl = new ConsumableCallBack() {
@@ -154,7 +169,8 @@ public class VGClient{
     public static boolean registerVGUser(String identify,
                                          String profile,
                                          String provider/*google.com, facebook.com*/,
-                                         String appData)
+                                         String appData,
+                                         final RegisterUserListener registerUserListener)
     {
         AsyncVGHttp.getInstance().registerUser(identify, profile, provider, appData, new ApiCallBack.RegisterUser() {
             @Override
@@ -162,13 +178,15 @@ public class VGClient{
                 currentLoginUser = user.clone();
                 //save currentLoginUser into preference
 
+                registerUserListener.finishRegisterUser(currentLoginUser);
                 AccountObserver.login(currentLoginUser);
                 return true;
             }
 
             @Override
-            public void OnException(Exception ex) {
+            public void onException(Exception ex) {
                 //tell BillService, to register again
+                registerUserListener.onException(ex);
             }
         });
 
@@ -184,9 +202,10 @@ public class VGClient{
     public static void logIn(String identify,
                              String profile,
                              String provider/*google.com, facebook.com*/,
-                             String appData)
+                             String appData,
+                             RegisterUserListener registerUserListener)
     {
-        registerVGUser(identify, profile, provider, appData);
+        registerVGUser(identify, profile, provider, appData, registerUserListener);
 
     }
 
@@ -215,7 +234,7 @@ public class VGClient{
                 IABHomeWork.getIabHelperBridge().purchase(act, product, new VGClient.GooglePurchaseListener()
                 {
                     @Override
-                    public void OnException(Exception ex) {
+                    public void onException(Exception ex) {
                         mpListener.onException(ex);
                     }
 
@@ -268,27 +287,64 @@ public class VGClient{
      *
      * we don't check google product here
      *
+     * the connectivity identify is product id
+     *
      */
-    public static void isGoodsPurchased(VGData.Goods product, VGClient.IsGoodsPurchasedListener purchasedListener)
+    public static void isGoodsPurchased(final VGData.Goods product, final VGClient.IsGoodsPurchasedListener purchasedListener)
     {
         //check local firstly
         boolean exist = OrderHelper.getInstance(getContext()).isGoodsExist(product.gid);
-        if(exist == true)
+        if(exist == true || product.paid == true)//record in local, or already paid
         {
-            purchasedListener.onQueryFinished(true);
+            //if not
+            purchasedListener.onQueryFinished(IsGoodsPurchasedListener.SUCCESS, true, false);
         }
         else//call server check
         {
-            //TODO
-            if(product.pay.type == GOOGLE_PLAYER)
+            //query from vg service firstly, then query real pay vendor
+            switch (product.pay.type)
             {
-                //call google query
-            }
-            else
-            {
-                //call vg query
-            }
+                case GOOGLE_PLAYER:
+                {
+                    //call google query
+                    IABHomeWork.getIabHelperBridge().queryPurchases(new IabHelper.QueryInventoryFinishedListener() {
+                            @Override
+                            public void onQueryInventoryFinished(IabResult result, Inventory inv, List<Purchase> allPurchases) {
+                            if(result.isFailure())
+                            {
+                                purchasedListener.onQueryFinished(IsGoodsPurchasedListener.QueryFail, false, false);
+                            }
+                            else
+                            {
+                                for(Purchase item: allPurchases)
+                                {
+                                    String goodsID = VGData.Goods.getProductIdFromPayload(item.getDeveloperPayload());
+                                    if(product.gid.equalsIgnoreCase(goodsID))
+                                    {
+                                        purchasedListener.onQueryFinished(IsGoodsPurchasedListener.SUCCESS, true, false);
+                                        return;
+                                    }
+                                }
 
+                                purchasedListener.onQueryFinished(IsGoodsPurchasedListener.SUCCESS, false, false);
+                            }
+                        }
+                    });
+                    break;
+                }
+                case FREE:
+                case VIRTUAL_CURRENCY_COIN:
+                case VIRTUAL_CURRENCY_DIAMOND:
+                {
+                    purchasedListener.onQueryFinished(IsGoodsPurchasedListener.SUCCESS, product.paid, false);
+                    break;
+                }
+                default:
+                {
+                    purchasedListener.onQueryFinished(IsGoodsPurchasedListener.SUCCESS, product.paid, false);
+                    break;
+                }
+            }
         }
     }
 }

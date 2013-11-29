@@ -54,7 +54,7 @@ public class AsyncVGHttp extends ApiCallBack{
         vp.add("pay_id",          app_data.getOrderId());
         vp.add("app_data",        app_data.toJson());
 
-        new AsyncVGRunner().request(VGClient.baseAPIURL + "/purchase", vp, HttpManager.HTTPMETHOD_POST,new RequestListener() {
+        new AsyncVGRunner().request(VGClient.baseAPIURL + "/buy", vp, HttpManager.HTTPMETHOD_POST,new RequestListener() {
 
             @Override
             public void onComplete(String response) {
@@ -151,7 +151,8 @@ public class AsyncVGHttp extends ApiCallBack{
     public void registerUser(String identify,
                                     String profile,
                                     String provider/*google.com, facebook.com*/,
-                                    String appData, final ApiCallBack.RegisterUser registerUserCallBack)
+                                    String appData,
+                                    final ApiCallBack.RegisterUser registerUserCallBack)
     {
         VGParameters vp = new VGParameters();
         vp.add("human", identify);
@@ -159,18 +160,18 @@ public class AsyncVGHttp extends ApiCallBack{
         vp.add("profile", profile);
         vp.add("appData", appData);
 
-        new AsyncVGRunner().request(VGClient.baseAPIURL + "/register_user", vp, HttpManager.HTTPMETHOD_GET,new RequestListener() {
+        new AsyncVGRunner().request(VGClient.baseAPIURL + "/register_user", vp, HttpManager.HTTPMETHOD_POST,new RequestListener() {
 
             @Override
             public void onComplete(String response) {
                 try{
                     registerUserCallBack.finishRegisterUser(VGData.User.parseJson(response));
-                }catch (Exception ne){registerUserCallBack.OnException(ne);}
+                }catch (Exception ne){registerUserCallBack.onException(ne);}
             }
 
             @Override
             public void onError(VGException e) {
-                registerUserCallBack.OnException(e);
+                registerUserCallBack.onException(e);
             }
         });
     }
@@ -189,14 +190,38 @@ public class AsyncVGHttp extends ApiCallBack{
             public void onComplete(String response) {
                 try{
                     orderUploadCallBack.uploadedOrders(response);
-                }catch (Exception ne){orderUploadCallBack.OnException(ne);}
+                }catch (Exception ne){orderUploadCallBack.onException(ne);}
             }
 
             @Override
             public void onError(VGException e) {
-                orderUploadCallBack.OnException(e);
+                orderUploadCallBack.onException(e);
             }
         });
     }
 
+
+    /*
+     * batch upload orders
+     */
+    public void isPurchased(String goodsID, final ApiCallBack.QueryPurchaseCallback purchaseCallback)
+    {
+        VGParameters vp = new VGParameters();
+        vp.add("goods_id", goodsID);
+
+        new AsyncVGRunner().request(VGClient.baseAPIURL + "/buy/goods/query", vp, HttpManager.HTTPMETHOD_POST,new RequestListener() {
+
+            @Override
+            public void onComplete(String response) {
+                try{
+                    purchaseCallback.queryPurchaseFinished(VGData.Receipt.parseJson(response));
+                }catch (Exception ne){purchaseCallback.onException(ne);}
+            }
+
+            @Override
+            public void onError(VGException e) {
+                purchaseCallback.onException(e);
+            }
+        });
+    }
  }
